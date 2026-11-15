@@ -1,0 +1,6 @@
+/sammati
+*.db
+*.db-wal
+*.db-shm
+.env
+dist/

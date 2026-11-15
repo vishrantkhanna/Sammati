@@ -1,0 +1,31 @@
+# Sammati with Docker Compose.
+#
+#   docker compose up -d --build
+#   open http://localhost:8787
+#
+# By default the port is reachable from this machine only. To reach it from
+# another machine while testing, start it with SAMMATI_BIND=0.0.0.0. In
+# production keep the default and put a reverse proxy with HTTPS in front.
+services:
+  sammati:
+    build: .
+    image: sammati:local
+    restart: unless-stopped
+    ports:
+      - "${SAMMATI_BIND:-127.0.0.1}:${SAMMATI_PORT:-8787}:8787"
+    environment:
+      SAMMATI_ALLOW_ORIGIN: "${SAMMATI_ALLOW_ORIGIN:-*}"
+      SAMMATI_FRAME_ANCESTORS: "${SAMMATI_FRAME_ANCESTORS:-*}"
+      SAMMATI_TRUST_PROXY: "${SAMMATI_TRUST_PROXY:-}"
+    volumes:
+      - sammati-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  sammati-data:

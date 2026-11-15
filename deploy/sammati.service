@@ -1,0 +1,21 @@
+[Unit]
+Description=Sammati consent records server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=sammati
+Group=sammati
+Environment=SAMMATI_DB=/var/lib/sammati/sammati.db
+Environment=SAMMATI_ADDR=127.0.0.1:8787
+Environment=SAMMATI_TRUST_PROXY=1
+ExecStart=/usr/local/bin/sammati serve
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/sammati
+
+[Install]
+WantedBy=multi-user.target

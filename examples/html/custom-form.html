@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Sammati custom form example</title></head>
+<body>
+  <!-- A form you design yourself, using the public API. -->
+  <form id="consent">
+    <h1 id="title"></h1>
+    <h2 id="notice-title"></h2>
+    <p id="notice-body" style="white-space: pre-line"></p>
+    <label>Email <input type="email" id="email" required></label>
+    <div id="purposes"></div>
+    <button>I agree</button>
+    <p id="result" role="status"></p>
+  </form>
+
+  <script>
+    const SAMMATI = "https://consent.example.com/api/v1";
+    const FORM = "newsletter";
+
+    async function load() {
+      const { form, notice } = await (await fetch(`${SAMMATI}/forms/${FORM}`)).json();
+      document.getElementById("title").textContent = form.title;
+      document.getElementById("notice-title").textContent = notice.title;
+      document.getElementById("notice-body").textContent = notice.body;
+      for (const p of form.purposes) {
+        const label = document.createElement("label");
+        const box = document.createElement("input");
+        box.type = "checkbox";          // never pre-ticked
+        box.value = p.purpose;
+        box.required = p.required;
+        label.append(box, ` ${p.title}: ${p.description}`);
+        document.getElementById("purposes").append(label, document.createElement("br"));
+      }
+    }
+
+    document.getElementById("consent").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const purposes = [...document.querySelectorAll("#purposes input:checked")].map((b) => b.value);
+      const res = await fetch(`${SAMMATI}/consents`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ form: FORM, identifier: document.getElementById("email").value, purposes }),
+      });
+      const out = await res.json();
+      document.getElementById("result").textContent = res.ok ? "Saved. Thank you." : out.detail;
+      // out.manage_token opens https://consent.example.com/manage?token=...
+    });
+
+    load();
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Sammati widget example</title></head>
+<body>
+  <h1>Join our newsletter</h1>
+
+  <!-- The whole integration is this one line. -->
+  <script src="https://consent.example.com/widget.js" data-form="newsletter"></script>
+
+  <script>
+    document.addEventListener("sammati:consent", function (e) {
+      console.log("Consent recorded:", e.detail.purposes);
+    });
+  </script>
+</body>
+</html>
