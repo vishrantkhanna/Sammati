@@ -185,5 +185,5 @@ See [LICENSE](LICENSE).
 <br>
 <img src="internal/web/static/mark.svg" alt="" width="28">
 <br>
-<sub>Built by <a href="https://www.linkedin.com/in/vishrant-k/">Vishrant Khanna</a>, a security architect who reads regulations as design requirements.</sub>
+<sub>Built by <a href="[https://www.linkedin.com/in/vishrant-k/](https://www.linkedin.com/in/vishrantkhanna/)">Vishrant Khanna</a>, a security architect who reads regulations as design requirements.</sub>
 </div>
